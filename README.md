@@ -7,4 +7,4 @@
   ###  pyQt5
   
 ## Run Command
-	### python mediaLibrary.py
+	 python mediaLibrary.py
