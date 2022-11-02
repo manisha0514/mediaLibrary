@@ -11,7 +11,7 @@
 	 python mediaLibrary.py
 	 
 ## Output
-!!![image](https://user-images.githubusercontent.com/113200064/199364354-8669a68c-5a89-427d-960b-bb43356ef16e.png | width = 70)
+![](https://user-images.githubusercontent.com/113200064/199364354-8669a68c-5a89-427d-960b-bb43356ef16e.png | width = 70)
 !!![image](https://user-images.githubusercontent.com/113200064/199364450-89a8ddcb-e2d4-43f3-998d-a5b317758844.png)
 !!![image](https://user-images.githubusercontent.com/113200064/199364496-8beff49b-9c6b-44a9-9e57-9cb1aa6b2586.png)
 !!![image](https://user-images.githubusercontent.com/113200064/199364896-b1b2d423-6939-4838-9081-0744ffc09858.png)
