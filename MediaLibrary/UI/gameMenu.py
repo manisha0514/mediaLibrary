@@ -3,11 +3,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtSql
 from PyQt5.QtGui import QPalette, QColor
 
+
+# create Menu for Adding Editing and Deleting game items
 class gameMenu_Ui_Dialog(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
-    def gameMenu_setupUi(self, dialog,username):
+    def gameMenu_setupUi(self, dialog, username):
+        """setup game UI"""
+
         self.username = username
         self.gameMenuDialog = dialog
         self.gameMenuDialog.setObjectName("Dialog")
@@ -47,7 +51,7 @@ class gameMenu_Ui_Dialog(QtWidgets.QMainWindow):
         font.setPointSize(16)
         self.addButton.setFont(font)
         self.addButton.setStyleSheet("background-color: rgb(25, 25, 112);\n"
-                                      "color: rgb(255, 255, 255);")
+                                     "color: rgb(255, 255, 255);")
         self.addButton.setObjectName("pushButton")
         self.editButton = QtWidgets.QPushButton(self.frame)
         self.editButton.setGeometry(QtCore.QRect(30, 330, 121, 41))
@@ -66,27 +70,13 @@ class gameMenu_Ui_Dialog(QtWidgets.QMainWindow):
                                         "color: rgb(255, 255, 255);")
         self.deleteButton.setObjectName("pushButton")
 
-
-
-        # self.viewButton = QtWidgets.QPushButton(self.frame)
-        # self.viewButton.setGeometry(QtCore.QRect(20, 460, 151, 51))
-        # font = QtGui.QFont()
-        # font.setPointSize(16)
-        # self.viewButton.setFont(font)
-        # self.viewButton.setStyleSheet("background-color: rgb(25, 25, 112);\n"
-        #                                 "color: rgb(255, 255, 255);")
-        # self.viewButton.setObjectName("pushButton")
-
-
-
-
         self.pushButton_3 = QtWidgets.QPushButton(self.frame)
         self.pushButton_3.setGeometry(QtCore.QRect(340, 580, 260, 51))
         font = QtGui.QFont()
         font.setPointSize(16)
         self.pushButton_3.setFont(font)
         self.pushButton_3.setStyleSheet("background-color: rgb(244, 35, 20);\n"
-                                      "color: rgb(255, 255, 255);")
+                                        "color: rgb(255, 255, 255);")
         self.pushButton_3.setObjectName("pushButton")
         self.backButton = QtWidgets.QPushButton(self.frame)
         self.backButton.setGeometry(QtCore.QRect(20, 580, 260, 51))
@@ -103,16 +93,17 @@ class gameMenu_Ui_Dialog(QtWidgets.QMainWindow):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Select Category"))
-        self.label_2.setText(_translate("Dialog", "Game Menu"))
+        self.label_2.setText(_translate("Dialog", "game Menu"))
         self.label_1.setText(_translate("Dialog", "Welcome User"))
         self.addButton.setText(_translate("Dialog", "Add"))
         self.editButton.setText(_translate("Dialog", "Edit"))
         self.deleteButton.setText(_translate("Dialog", "Delete"))
         self.backButton.setText(_translate("Dialog", "Back"))
         self.pushButton_3.setText(_translate("Dialog", "Logout"))
-        self.deleteButton.clicked.connect(self.deleteContact)
 
     def table_view(self):
+        """for viewing table in the layout """
+
         db_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         self.db = QtSql.QSqlDatabase.addDatabase('QSQLITE')
         self.db.setDatabaseName(
@@ -122,15 +113,12 @@ class gameMenu_Ui_Dialog(QtWidgets.QMainWindow):
         if not self.db.open():
             print("Could not open the database")
 
-        # this will give you the whole table:
+        self.model = QtSql.QSqlTableModel(self, self.db)
+        self.model.setTable('game')
+        self.filter_criteria = "user_id = ('%s')" % (self.username)
 
-        selectrows = QtSql.QSqlQuery(self.db)
-        selectrows.prepare("SELECT * FROM game WHERE user_id LIKE(?)")
-        selectrows.bindValue(0,self.username)
-        selectrows.exec_()
-        self.tablemodel =  QtSql.QSqlQueryModel()
-        self.tablemodel.setQuery(selectrows)
-        #
+        self.model.setFilter(self.filter_criteria)
+        self.model.select()
         self.tableLayout = QtWidgets.QHBoxLayout(self.frame)
         self.tableLayout.addStretch(2)
 
@@ -141,22 +129,18 @@ class gameMenu_Ui_Dialog(QtWidgets.QMainWindow):
         self.tableWidget.setStyleSheet("background-color: rgb(215, 215, 215);")
         self.tview = QtWidgets.QTableView(self.tableWidget)
 
-        self.tview.setModel(self.tablemodel)
+        self.tview.setModel(self.model)
         self.tview.hideColumn(0)
         self.tview.hideColumn(7)
-        self.tview.resizeColumnsToContents()
-        self.tview.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        # self.tview.resizeColumnsToContents()
+        # self.tview.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
         self.layout = QtWidgets.QVBoxLayout(self.tableWidget)
         self.layout.addWidget(self.tview)
 
-
-
     def deleteContact(self):
-        """Delete the selected contact from the database."""
-        self.model = QtSql.QSqlTableModel(self, self.db)
-        self.model.setTable('game')
-        self.model.select()
+        """Delete the selected game details from the database."""
+
         row = self.tview.currentIndex().row()
         if row < 0:
             return
@@ -178,12 +162,13 @@ class gameMenu_Ui_Dialog(QtWidgets.QMainWindow):
             except Exception as e:
                 print(e)
 
-if __name__ == "__main__":
-    import sys
+    def changeRecord(self):
+        """ Edits game items in the table"""
 
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = menu_Ui_Dialog()
-    ui.menu_setupUi(Dialog)
-    Dialog.show()
-    sys.exit(app.exec_())
+        row = self.model.rowCount()
+        # self.model.insertRow(row)
+
+        index = self.model.index(row, 0)
+        self.tview.setCurrentIndex(index)
+        self.tview.edit(index)
+

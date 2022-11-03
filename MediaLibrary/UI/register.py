@@ -195,6 +195,8 @@ class Ui_Dialog(QtWidgets.QMainWindow):
         self.movieMenuDialog.show()
         self.movieMenu_Ui_Dialog_obj.addButton.clicked.connect(self.AddMoviesUI)
         self.movieMenu_Ui_Dialog_obj.deleteButton.clicked.connect(self.movieMenu_Ui_Dialog_obj.deleteContact)
+        self.movieMenu_Ui_Dialog_obj.editButton.clicked.connect(self.movieMenu_Ui_Dialog_obj.changeRecord)
+
         self.movieMenu_Ui_Dialog_obj.backButton.clicked.connect(lambda: self.selectcategory_UI(self.movieMenuDialog))
         #self.movieMenu_Ui_Dialog_obj.viewButton.clicked.connect(movieMenu_Ui_Dialog.table_view)
         self.movieMenu_Ui_Dialog_obj.pushButton_3.clicked.connect(lambda : self.login_UI(self.movieMenuDialog))
@@ -206,6 +208,8 @@ class Ui_Dialog(QtWidgets.QMainWindow):
         self.musicMenuDialog.show()
         self.musicMenu_Ui_Dialog_obj.addButton.clicked.connect(self.AddMusicUI)
         self.musicMenu_Ui_Dialog_obj.deleteButton.clicked.connect(self.musicMenu_Ui_Dialog_obj.deleteContact)
+        self.musicMenu_Ui_Dialog_obj.editButton.clicked.connect(self.musicMenu_Ui_Dialog_obj.changeRecord)
+
         self.musicMenu_Ui_Dialog_obj.backButton.clicked.connect(lambda: self.selectcategory_UI(self.musicMenuDialog))
         self.musicMenu_Ui_Dialog_obj.pushButton_3.clicked.connect(lambda : self.logout_UI(self.musicMenuDialog))
 
@@ -216,7 +220,7 @@ class Ui_Dialog(QtWidgets.QMainWindow):
         self.gameMenuDialog.show()
         self.gameMenu_Ui_Dialog_obj.addButton.clicked.connect(self.AddGameUI)
         self.gameMenu_Ui_Dialog_obj.deleteButton.clicked.connect(self.gameMenu_Ui_Dialog_obj.deleteContact)
-
+        self.gameMenu_Ui_Dialog_obj.editButton.clicked.connect(self.gameMenu_Ui_Dialog_obj.changeRecord)
         self.gameMenu_Ui_Dialog_obj.backButton.clicked.connect(lambda: self.selectcategory_UI(self.gameMenuDialog))
         self.gameMenu_Ui_Dialog_obj.pushButton_3.clicked.connect(lambda : self.login_UI(self.gameMenuDialog))
 
